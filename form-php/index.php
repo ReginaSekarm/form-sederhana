@@ -2,18 +2,15 @@
 require_once 'Person.php';
 
 $person = null;
-$errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['reset'])) {
-    $errors = Person::validate($_POST);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    $firstName   = htmlspecialchars(trim($_POST['firstname'] ?? ''));
+    $lastName    = htmlspecialchars(trim($_POST['lastname'] ?? ''));
+    $phoneNumber = htmlspecialchars(trim($_POST['phone'] ?? ''));
+    $address     = htmlspecialchars(trim($_POST['address'] ?? ''));
 
-    if (empty($errors)) {
-        $person = new Person(
-            $_POST['firstname'],
-            $_POST['lastname'],
-            $_POST['phone_number'],
-            $_POST['address']
-        );
+    if ($firstName && $lastName && $phoneNumber && $address) {
+        $person = new Person($firstName, $lastName, $phoneNumber, $address);
     }
 }
 ?>
@@ -26,87 +23,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['reset'])) {
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="card">
-    <div class="card-header">
-        <h1>Input Form</h1>
-        <p>Silakan isi data diri Anda</p>
-    </div>
-
-    <?php if (!empty($errors)): ?>
-        <div class="error-box">
-            <ul>
-                <?php foreach ($errors as $err): ?>
-                    <li><?= $err ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($person === null): ?>
+    <div class="container">
         <form method="POST" action="">
-            <div class="form-group">
-                <input
-                    type="text"
-                    name="firstname"
-                    placeholder="Firstname"
-                    value="<?= htmlspecialchars($_POST['firstname'] ?? '') ?>"
-                />
-            </div>
-            <div class="form-group">
-                <input
-                    type="text"
-                    name="lastname"
-                    placeholder="Lastname"
-                    value="<?= htmlspecialchars($_POST['lastname'] ?? '') ?>"
-                />
-            </div>
-            <div class="form-group">
-                <input
-                    type="text"
-                    name="phone_number"
-                    placeholder="Phone Number"
-                    value="<?= htmlspecialchars($_POST['phone_number'] ?? '') ?>"
-                />
-            </div>
-            <div class="form-group">
-                <textarea
-                    name="address"
-                    placeholder="Address"
-                ><?= htmlspecialchars($_POST['address'] ?? '') ?></textarea>
-            </div>
+            <input type="text" name="firstname" placeholder="Firstname"
+                value="<?= isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : '' ?>">
+            <input type="text" name="lastname" placeholder="Lastname"
+                value="<?= isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : '' ?>">
+            <input type="text" name="phone" placeholder="Phone Number"
+                value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>">
+            <textarea name="address" placeholder="Address"><?= isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '' ?></textarea>
             <div class="form-action">
-                <button type="submit" class="btn-submit">Submit</button>
+                <button type="submit" name="submit" class="btn-submit">Submit</button>
             </div>
         </form>
 
-    <?php else: ?>
-        <div class="result-box">
-            <div class="result-item">
-                <span class="result-label">Nama</span>
-                <span class="result-value"><?= $person->getFullname() ?></span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Phone Number</span>
-                <span class="result-value"><?= $person->getPhoneNumber() ?></span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Address</span>
-                <span class="result-value"><?= $person->getAddress() ?></span>
-            </div>
-        </div>
-
-        <div class="result-summary">
-            <p>Hi, my name is <strong><?= $person->getFullname() ?></strong></p>
+        <?php if ($person !== null): ?>
+        <div class="result">
+            <p>Hi, my name is <?= $person->getFullName() ?></p>
             <p>Phone Number : <?= $person->getPhoneNumber() ?></p>
             <p>Address : <?= $person->getAddress() ?></p>
+            <a href="index.php" class="reset-link">Reset</a>
         </div>
-
-        <form method="POST" action="">
-            <div class="form-action">
-                <button type="submit" name="reset" value="1" class="btn-reset">Reset</button>
-            </div>
-        </form>
-    <?php endif; ?>
-</div>
+        <?php endif; ?>
+    </div>
 </body>
 </html>
