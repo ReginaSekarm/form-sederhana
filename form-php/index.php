@@ -25,16 +25,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 <body>
     <div class="container">
         <form method="POST" action="">
-            <input type="text" name="firstname" placeholder="Firstname"
-                value="<?= isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : '' ?>">
-            <input type="text" name="lastname" placeholder="Lastname"
-                value="<?= isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : '' ?>">
-            <input type="text" name="phone" placeholder="Phone Number"
-                value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>">
-            <textarea name="address" placeholder="Address"><?= isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '' ?></textarea>
+
+            <div class="form-group">
+                <input type="text" name="firstname" placeholder="Firstname"
+                    value="<?= isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : '' ?>">
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="lastname" placeholder="Lastname"
+                    value="<?= isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : '' ?>">
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="phone" placeholder="Phone Number"
+                    value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>">
+            </div>
+
+            <div class="form-group">
+                <textarea name="address" placeholder="Address"><?= isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '' ?></textarea>
+            </div>
+
             <div class="form-action">
                 <button type="submit" name="submit" class="btn-submit">Submit</button>
             </div>
+
         </form>
 
         <?php if ($person !== null): ?>
