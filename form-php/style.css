@@ -57,7 +57,7 @@ textarea {
 
 .btn-submit {
     background: #4a90d9;
-    color: #4a90d9;
+    color: #ffffff; /* FIX: was #4a90d9 (same as background, text invisible) */
     border: none;
     border-radius: 20px;
     padding: 7px 28px;
